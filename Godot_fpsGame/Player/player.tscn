@@ -1,0 +1,533 @@
+[gd_scene load_steps=41 format=3 uid="uid://41mx0i8sp5og"]
+
+[ext_resource type="Script" uid="uid://wnhjntp8rgnb" path="res://Player/player.gd" id="1_5oujr"]
+[ext_resource type="Script" uid="uid://bnsro17y1ecsy" path="res://Player/center_container.gd" id="2_dqnso"]
+[ext_resource type="PackedScene" uid="uid://qyk3ef3kuu81" path="res://Silah/silah_01/silah01.glb" id="2_flmxv"]
+[ext_resource type="Script" uid="uid://de2pp8x8xn7rr" path="res://Player/recoil.gd" id="2_j6cr4"]
+[ext_resource type="Theme" uid="uid://c6dc6bjyqke6x" path="res://debug.tres" id="3_q7pcv"]
+[ext_resource type="Script" uid="uid://bcnqhv7cldnhl" path="res://Silah/init_weapon.gd" id="3_t4ps8"]
+[ext_resource type="Resource" uid="uid://eubxda4yobc5" path="res://Silah/silah_02/silah_02.tres" id="4_5dt2s"]
+[ext_resource type="Script" uid="uid://bygfu7fi2hwxs" path="res://Player/debug.gd" id="4_mbc44"]
+[ext_resource type="Script" uid="uid://6edx65nxalv8" path="res://scripts/state_machine.gd" id="5_gq5yc"]
+[ext_resource type="Texture2D" uid="uid://wpqtpo6m8sv0" path="res://Silah/new_noise_texture_2d.tres" id="5_olwck"]
+[ext_resource type="Script" uid="uid://bonvc76kg734c" path="res://idle_player_state.gd" id="6_8hgpi"]
+[ext_resource type="Script" uid="uid://cercdmp7lexp" path="res://Player/recoil_position.gd" id="7_0w6bl"]
+[ext_resource type="Script" uid="uid://df7d0h1maoun" path="res://walking_player_state.gd" id="7_wqbl1"]
+[ext_resource type="ArrayMesh" uid="uid://bcwbbkxvpdjwa" path="res://Silah/silah_02/silah_02.res" id="8_b3vii"]
+[ext_resource type="Script" uid="uid://c7u72ybpi17dl" path="res://Player/crouching_player_state.gd" id="8_r18gg"]
+[ext_resource type="Script" uid="uid://bk472btxcrfvw" path="res://Player/muzzle_flash.gd" id="9_6mqul"]
+[ext_resource type="Script" uid="uid://bcqkr35uu8vx2" path="res://Player/jumping_player_state.gd" id="9_u8cex"]
+[ext_resource type="Texture2D" uid="uid://lycvccyqwxgy" path="res://Environment/Textures/smoke.png" id="10_2o1le"]
+[ext_resource type="Texture2D" uid="uid://d0c56vydnjour" path="res://Environment/Textures/fire.png" id="10_7yoe5"]
+[ext_resource type="AudioStream" uid="uid://6imt8rx62wrd" path="res://sounds/lmg_fire01(1).mp3" id="12_b4aab"]
+[ext_resource type="AudioStream" uid="uid://cyvo72cy0wwb5" path="res://sounds/Jesús Lastra - Isolation.mp3" id="21_07wg5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qj3m4"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_grm08"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g86tr"]
+transparency = 1
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 2
+disable_ambient_light = true
+disable_fog = true
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("10_2o1le")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 2
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_5sxab"]
+_data = [Vector2(0.00980393, 0.032967), 0.0, 0.0, 0, 0, Vector2(0.495098, 0.956044), 0.0, 0.0, 0, 0, Vector2(1, 0.021978), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_funjq"]
+curve = SubResource("Curve_5sxab")
+
+[sub_resource type="Curve" id="Curve_36r5i"]
+_data = [Vector2(0.00980393, 0.0659341), 0.0, 2.82656, 0, 0, Vector2(0.166667, 0.549451), 1.99267, 1.99267, 0, 0, Vector2(0.946078, 0.989011), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_y4qvx"]
+curve = SubResource("Curve_36r5i")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l8pi6"]
+particle_flag_damping_as_friction = true
+angle_min = -360.0
+angle_max = 360.0
+direction = Vector3(0, 0, -1)
+spread = 25.0
+initial_velocity_min = 2.0
+initial_velocity_max = 6.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 0.999998
+linear_accel_max = 3.0
+damping_min = 1.0
+damping_max = 3.0
+attractor_interaction_enabled = false
+scale_curve = SubResource("CurveTexture_y4qvx")
+color = Color(1, 1, 1, 0.172549)
+alpha_curve = SubResource("CurveTexture_funjq")
+anim_offset_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_vx7ad"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebvmk"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+diffuse_mode = 3
+specular_mode = 2
+disable_ambient_light = true
+disable_fog = true
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.9375, 0.749416, 0.303955, 1)
+albedo_texture = ExtResource("10_7yoe5")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 2
+particles_anim_v_frames = 2
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_iadj8"]
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+direction = Vector3(0, 0, -1)
+spread = 23.276
+initial_velocity_min = 1.0
+initial_velocity_max = 1.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
+anim_offset_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_bibyu"]
+orientation = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_sp1u4"]
+orientation = 1
+
+[sub_resource type="Animation" id="Animation_xh4ar"]
+resource_name = "Crouch"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.25, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CamHolder:position")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_o0rh7"]
+resource_name = "Idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CamHolder:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CamHolder:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0.5, -0.25, 0, 0.25, 0, 0.546212, -0.25, 0, 0.25, 0, 0.499948, -0.25, 0, 0.25, 0, 0.546212, -0.25, 0, 0.25, 0, 0.499868, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CamHolder:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+
+[sub_resource type="Animation" id="Animation_ywg8b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [2.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CamHolder:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0)]
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CamHolder:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CamHolder:position:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.5, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CamHolder:position:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_ssg13"]
+resource_name = "Walking"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CamHolder:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0.0147144, -0.25, 0, 0.25, 0, -8.17254e-05, -0.25, 0, 0.25, 0, -0.0146087, -0.25, 0, 0.25, 0, -0.000161548, -0.25, 0, 0.25, 0, 0.0149223, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CamHolder:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0.500127, -0.25, 0, 0.209151, 0.00415742, 0.546417, -0.25, 0, 0.25, 0, 0.500054, -0.257516, 0.00446999, 0.242484, 0.00446999, 0.546417, -0.25, 0, 0.25, 0, 0.499815, -0.257516, 0.00423056, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CamHolder:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lef6p"]
+_data = {
+&"Crouch": SubResource("Animation_xh4ar"),
+&"Idle": SubResource("Animation_o0rh7"),
+&"RESET": SubResource("Animation_ywg8b"),
+&"Walking": SubResource("Animation_ssg13")
+}
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_v7716"]
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("cam", "ANIMATION_PLAYER", "Crouch_ShapeCast", "weapon_controller", "camera_controller", "game_music")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_5oujr")
+cam = NodePath("CamHolder")
+ANIMATION_PLAYER = NodePath("AnimationPlayer")
+Crouch_ShapeCast = NodePath("ShapeCast3D")
+weapon_controller = NodePath("CamHolder/Recoil/Camera3D/WeaponHolder/silah01")
+camera_controller = NodePath("CamHolder/Recoil/Camera3D")
+game_music = NodePath("AudioStreamPlayer")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_qj3m4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_grm08")
+
+[node name="CamHolder" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="Recoil" type="Node3D" parent="CamHolder" node_paths=PackedStringArray("weapon")]
+script = ExtResource("2_j6cr4")
+recoil_amount = Vector3(0.3, 0.05, 0)
+snap_amount = 6.0
+speed = 4.0
+weapon = NodePath("Camera3D/WeaponHolder/silah01")
+
+[node name="Camera3D" type="Camera3D" parent="CamHolder/Recoil"]
+
+[node name="WeaponHolder" type="Node3D" parent="CamHolder/Recoil/Camera3D"]
+
+[node name="silah01" parent="CamHolder/Recoil/Camera3D/WeaponHolder" instance=ExtResource("2_flmxv")]
+transform = Transform3D(0.493286, 0, 0.081663, 0, 0.5, 0, -0.081663, 0, 0.493286, 0.196, -0.216, -0.706)
+visibility_parent = NodePath("RecoilPosition/WeaponMesh")
+script = ExtResource("3_t4ps8")
+weapon_type = ExtResource("4_5dt2s")
+sway_noise = ExtResource("5_olwck")
+sway_speed = 1.5
+
+[node name="RecoilPosition" type="Node3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01" node_paths=PackedStringArray("weapon")]
+transform = Transform3D(1, 0, 1.49012e-08, 0, 1, 0, -1.49012e-08, 0, 1, 0, 0, 0)
+script = ExtResource("7_0w6bl")
+recoil_amount = Vector3(0.02, 0.02, 0.5)
+snap_amount = 5.0
+speed = 10.0
+weapon = NodePath("..")
+
+[node name="WeaponMesh" type="MeshInstance3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01/RecoilPosition"]
+unique_name_in_owner = true
+mesh = ExtResource("8_b3vii")
+skeleton = NodePath("../..")
+
+[node name="MuzzleFlash" type="Node3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01" node_paths=PackedStringArray("weapon", "emitter", "emitter_2", "sound")]
+transform = Transform3D(1, 0, 4.47035e-08, 0, 1, 0, -4.47035e-08, 0, 1, -0.00303605, -0.00361633, -2.0257)
+visibility_parent = NodePath("GPUParticles3D")
+script = ExtResource("9_6mqul")
+weapon = NodePath("..")
+emitter = NodePath("GPUParticles3D")
+emitter_2 = NodePath("GPUParticles3D2")
+sound = NodePath("AudioStreamPlayer")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01/MuzzleFlash"]
+material_override = SubResource("StandardMaterial3D_g86tr")
+emitting = false
+amount = 6
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_l8pi6")
+draw_pass_1 = SubResource("QuadMesh_vx7ad")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01/MuzzleFlash"]
+material_override = SubResource("StandardMaterial3D_ebvmk")
+emitting = false
+amount = 1
+lifetime = 0.15
+interp_to_end = 0.99
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_iadj8")
+draw_passes = 2
+draw_pass_1 = SubResource("QuadMesh_bibyu")
+draw_pass_2 = SubResource("QuadMesh_sp1u4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01/MuzzleFlash"]
+stream = ExtResource("12_b4aab")
+
+[node name="MuzzleFlash2" type="Node3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01" node_paths=PackedStringArray("weapon", "emitter", "emitter_2", "sound")]
+transform = Transform3D(1, 0, 4.47035e-08, 0, 1, 0, -4.47035e-08, 0, 1, -0.00303605, -0.00361633, -2.0257)
+visibility_parent = NodePath("GPUParticles3D2")
+script = ExtResource("9_6mqul")
+weapon = NodePath("..")
+emitter = NodePath("GPUParticles3D")
+emitter_2 = NodePath("GPUParticles3D2")
+sound = NodePath("AudioStreamPlayer")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01/MuzzleFlash2"]
+material_override = SubResource("StandardMaterial3D_g86tr")
+emitting = false
+amount = 6
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_l8pi6")
+draw_pass_1 = SubResource("QuadMesh_vx7ad")
+
+[node name="GPUParticles3D2" type="GPUParticles3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01/MuzzleFlash2"]
+material_override = SubResource("StandardMaterial3D_ebvmk")
+emitting = false
+amount = 1
+lifetime = 0.15
+interp_to_end = 0.99
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_iadj8")
+draw_passes = 2
+draw_pass_1 = SubResource("QuadMesh_bibyu")
+draw_pass_2 = SubResource("QuadMesh_sp1u4")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CamHolder/Recoil/Camera3D/WeaponHolder/silah01/MuzzleFlash2"]
+stream = ExtResource("12_b4aab")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.217, 0.626, -2.043)
+light_color = Color(0.956863, 0.929412, 0.952941, 1)
+light_energy = 1.198
+omni_range = 2.669
+omni_attenuation = 0.811
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="CamHolder/Recoil/Camera3D/WeaponHolder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.744, 1.056, -1.692)
+light_color = Color(0.956863, 0.929412, 0.952941, 1)
+light_energy = 1.198
+omni_range = 2.669
+omni_attenuation = 0.811
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_lef6p")
+}
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_v7716")
+target_position = Vector3(0, 0.5, 0)
+debug_shape_custom_color = Color(0.562483, 0.718123, 0.277739, 1)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="Control" node_paths=PackedStringArray("SIGHT_LINES", "PLAYER_CONTROLLER")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_dqnso")
+SIGHT_LINES = [NodePath("Top"), NodePath("Left"), NodePath("Bottom"), NodePath("Right")]
+PLAYER_CONTROLLER = NodePath("../..")
+
+[node name="Top" type="Line2D" parent="Control/CenterContainer"]
+points = PackedVector2Array(0, -10, 0, -20, 0, -6)
+width = 3.0
+
+[node name="Left" type="Line2D" parent="Control/CenterContainer"]
+points = PackedVector2Array(-10, 0, -20, 0, -6, 0)
+width = 3.0
+
+[node name="Bottom" type="Line2D" parent="Control/CenterContainer"]
+points = PackedVector2Array(0, 10, 0, 20, 0, 6)
+width = 3.0
+
+[node name="Right" type="Line2D" parent="Control/CenterContainer"]
+points = PackedVector2Array(10, 0, 20, 0, 6, 0)
+width = 3.0
+
+[node name="debug panel" type="Panel" parent="Control"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 210.0
+offset_bottom = 50.0
+theme = ExtResource("3_q7pcv")
+script = ExtResource("4_mbc44")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/debug panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/debug panel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state")]
+script = ExtResource("5_gq5yc")
+current_state = NodePath("IdlePlayerState")
+
+[node name="IdlePlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("6_8hgpi")
+
+[node name="WalkingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("7_wqbl1")
+
+[node name="CrouchingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("8_r18gg")
+
+[node name="JumpingPlayerState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("9_u8cex")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("21_07wg5")
+
+[connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
